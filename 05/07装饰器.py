@@ -65,7 +65,6 @@ def log(text):
     return decorator
 # import functools是导入functools模块。模块的概念稍候讲解。现在，只需记住在定义wrapper()的前面加上@functools.wraps(func)即可。
 
-
 #练习 函数执行的时间
 import  time, functools
 def calculateTime(text):
@@ -87,8 +86,6 @@ def ongrunning():
         t = i * i
 
     print('-end--')
-
-
 ongrunning()
 
 
