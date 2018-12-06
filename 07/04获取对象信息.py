@@ -86,10 +86,10 @@ print(fn())
 #
 # sum = getattr(obj, 'x') + getattr(obj, 'y')
 
-def readImage(fp):
-    if hasattr(fp, 'read'):
-        return readData(fp)
-    return None
+# def readImage(fp):
+#     if hasattr(fp, 'read'):
+#         return readData(fp)
+#     return None
 
 
 
