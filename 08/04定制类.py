@@ -45,26 +45,130 @@ for n in Fib():
 # Fib实例虽然能作用于for循环，看起来和list有点像，但是，把它当成list来使用还是不行，比如，取第5个元素：
 #要表现得像list那样按照下标取出元素，需要实现__getitem__()方法：
 
+class Fib(object):
+    def __getitem__(self, n):
+        a, b = 1, 1
+        for x in  range(n):
+            a, b = b, a+b
+        return a
+
+f = Fib()
+print(f[0], f[1], f[2], f[3], f[100])
+
+
+#但是list有个神奇的切片方法
+print(list(range(100))[5:10])
+#但是f报错是__getiteM
+class Fib(object):
+    def __getitem__(self, n):
+        if isinstance(n, int):
+            a, b = 1, 1
+            for x in range(n):
+                a, b = b, a + b
+            return a
+        #n是切片
+        if isinstance(n, slice):
+            start = n.start
+            stop = n.stop
+            if start is None:
+                start = 0
+            a, b = 1, 1
+            L = []
+            for x in range(stop):
+                if x >= start:
+                    L.append(a)
+                a, b = b, a + b
+        return L
+
+
+f = Fib()
+print(f[5:10])
+
+print(f[100:110])
+#_实现_getitem__方法可以直接for循环
+
+for n in f:
+    if n > 1000:
+        break;
+    print(n)
+
+print(f[:10:2])   #[1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
+
+#但是没有对step参数作处理 也没有对负数作处理，
+
+
+# 此外，如果把对象看成dict，__getitem__()的参数也可能是一个可以作key的object，例如str。
+#
+# 与之对应的是__setitem__()方法，把对象视作list或dict来对集合赋值。最后，还有一个__delitem__()方法，用于删除某个元素。
+
+# __getattr__
+#正常情况下，当我们调用类的方法或属性时，如果不存在，就会报错。比如定义Student类：
+class Student(object):
+
+    def __init__(self):
+        self.name = 'Michael'
+
+    def __getattr__(self, attr):
+        if attr=='score':
+            return 99
+
+
+# 当调用不存在的属性时，比如score，Python解释器会试图调用__getattr__(self, 'score')来尝试获得属性，这样，我们就有机会返回score的值：
+
+s = Student()
+s.name = 'miixao'
+print(s.score)
+
+# 返回函数也是完全可以的：
+
+class Student(object):
+    def __getattr__(self, attr):
+        if attr == 'age':
+            return lambda : 25
+
+s = Student()
+print(s.age())
+
+# 注意，只有在没有找到属性的情况下，才调用__getattr__，已有的属性，比如name，不会在__getattr__中查找。
+
+# 此外，注意到任意调用如s.abc都会返回None，这是因为我们定义的__getattr__默认返回就是None。要让class只响应特定的几个属性，我们就要按照约定，抛出AttributeError的错误：
+
+class Student(object):
+    def __getattr__(self, attr):
+        if attr == 'age':
+            return lambda : 25
+        raise AttributeError('no found')
+s = Student()
+# print(s.age1())
 
 
 
+#这实际上可以把一个类的所有属性和方法调用全部动态化处理了，不需要任何特殊手段。
 
+# 这种完全动态调用的特性有什么实际作用呢？作用就是，可以针对完全动态的情况作调用。
+#
+# 举个例子：
+#
+# 现在很多网站都搞REST API，比如新浪微博、豆瓣啥的，调用API的URL类似：
+#
+# http://api.server/user/friends
+# http://api.server/user/timeline/list
 
+class Chain(object):
+    def __init__(self, path= ''):
+        self._path = path
 
+    def __getattr__(self, path):
+        return Chain('%s/%s' % (self._path, path))
+    def __str__(self):
+        return self._path
+    __repr__ = __str__
 
+print(Chain('http://api.server/user').usr.timeline)
 
+# __call__
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+# 一个对象实例可以有自己的属性和方法，当我们调用实例方法时，我们用instance.method()来调用。能不能直接在实例本身上调用呢？在Python中，答案是肯定的。
+#
+# 任何类，只需要定义一个__call__()方法，就可以直接对实例进行调用。请看示例：
 

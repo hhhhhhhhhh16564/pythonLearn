@@ -34,9 +34,3 @@ print(Student.count)
 
 
 
-
-
-
-
-
-
