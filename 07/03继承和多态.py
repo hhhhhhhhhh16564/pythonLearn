@@ -46,7 +46,16 @@ run_twice(Dog())
 # 对于Python这样的动态语言来说，则不一定需要传入Animal类型。我们只需要保证传入的对象有一个run()方法就可以了：
 # 这就是动态语言的“鸭子类型”，它并不要求严格的继承体系，一个对象只要“看起来像鸭子，走起路来像鸭子”，那它就可以被看做是鸭子。
 
-
+#子类继承父类的方法
+class Animal:
+    def __init__(self,name,age,weight):
+        self.name=name
+        self.age=age
+        self.weight=weight
+class Dog(Animal):
+    def __init__(self,name,age,weight,owner):
+        super().__init__(name,age,weight)
+        self.owner=owner
 
 
 
