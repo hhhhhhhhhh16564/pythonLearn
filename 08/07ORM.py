@@ -65,3 +65,4 @@ class User(Model):
     password = StringField('password')
 u = User(id = 12345, name = 'Michael', email = 'test.org', password= 'my-pwd')
 u.save()
+

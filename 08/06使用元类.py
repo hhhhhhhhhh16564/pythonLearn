@@ -33,7 +33,6 @@ day1 = Weekday.Mon
 print(Weekday.Mon)   #Weekday.Mon
 print(Weekday['Tue']) #Weekday.Tue
 print(Weekday.Thu.value) # 4
-
 print(day1 == Weekday.Mon) #True
 
 print(Weekday(1)) #Weekday.Mon
