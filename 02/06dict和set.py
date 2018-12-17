@@ -4,7 +4,6 @@ d['adam'] = 67
 d['hhhh'] = 99
 print(d)
 print(d['bob'])
-
 #如果key不存在，dict就会报错：
 #dict提供的get()方法，如果key不存在，可以返回None，或者自己指定的value：
 
