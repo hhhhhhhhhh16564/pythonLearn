@@ -99,3 +99,48 @@ print(L )
 #查看当前目录下的py文件
 L = [x for x in os.listdir('.') if os.path.isfile(x) and os.path.splitext(x)[1] == '.py']
 print(L )
+
+
+print('*************************')
+Files = []
+
+#打印目录的结构图
+
+def printDir(dir, i):
+    path = ''
+    for index in  range(i):
+        path = path + '      '
+    path = path + os.path.split(dir)[1];
+    # print(path)
+
+def appendFile(dir, i):
+    printDir(dir, i)
+    Files.append(os.path.split(dir)[1])
+
+def getDirAllFiles(dir, i):
+    if os.path.isfile(dir):
+        appendFile(dir, i)
+    elif os.path.isdir(dir):
+        for path in  os.listdir(dir):
+            path = os.path.join(dir, path)
+            if os.path.isdir(path):
+                printDir(path, i)
+                getDirAllFiles(path, i+1)
+            else:
+                appendFile(path, i)
+
+def findAll(path, containStr):
+    getDirAllFiles(path, 0)
+    return [x for x in Files if x.find(containStr) != -1]
+
+path = os.path.abspath('../')
+
+# getDirAllFiles(path, 0)
+
+L = findAll(path, '.py')
+
+print(L)
+print(len(L))
+
+
+
