@@ -111,7 +111,7 @@ def printDir(dir, i):
     for index in  range(i):
         path = path + '      '
     path = path + os.path.split(dir)[1];
-    # print(path)
+    print(path)
 
 def appendFile(dir, i):
     printDir(dir, i)

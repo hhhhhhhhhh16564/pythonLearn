@@ -49,6 +49,8 @@ class Student(object):
         self.name = name
         self.age = age
         self.score = score
+    def __str__(self):
+        return 'Student:objec %s %s %s' % (self.name, self.age, self.score)
 
 s = Student('Bob', 20, 80)
 
@@ -88,5 +90,16 @@ print(json.loads(json_str, object_hook=dict2student))
 # 既做到了接口简单易用，又做到了充分的扩展性和灵活性。
 
 
+#可以将自定义的对象直接转化为json存入文件中
+s = Student('Bob', 2000, 8000)
+f = open('041.dump.txt', 'wb')
+pickle.dump(s, f)
+f.close()
 
+
+f = open('041.dump.txt', 'rb')
+content = pickle.load(f)
+f.close()
+
+print(content, '-------------')
 
