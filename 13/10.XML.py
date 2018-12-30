@@ -24,12 +24,86 @@ class DefaultSaxHandle(object):
     def char_data(self, text):
         print('sax:char_data: %s' % text)
 
-xml = r'''
-<?xml version="1.0"?>
+xml = r'''<?xml version="1.0"?>
 <ol>
     <li><a href="/python">Python</a></li>
     <li><a href="/ruby">Ruby</a></li>
 </ol>
 '''
-handle = DefaultSaxHandle()
+
+handler = DefaultSaxHandle()
 parser = ParserCreate()
+parser.StartElementHandler = handler.start_element
+parser.EndElementHandler = handler.end_element
+parser.CharacterDataHandler = handler.char_data
+parser.Parse(xml)
+# 需要注意的是读取一大段字符串时，CharacterDataHandler可能被多次调用，所以需要自己保存起来，在EndElementHandler里面再合并。
+
+
+# 除了解析XML外，如何生成XML呢？99%的情况下需要生成的XML结构都是非常简单的，因此，最简单也是最有效的生成XML的方法是拼接字符串：
+# L = []
+# L.append(r'<?xml version="1.0">')
+# L.append(r'<root>')
+# L.append(encode('some & data'))
+# L.append(r'</root>')
+# ''.join(L)
+
+# 如果要生成复杂的XML呢？建议你不要用XML，改成JSON。
+# 小结
+# 解析XML时，注意找出自己感兴趣的节点，响应事件时，把节点数据保存起来。解析完毕后，就可以处理数据。
+
+from urllib import request
+
+URL = 'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20%3D%202151330&format=xml'
+
+
+class WeatherSaxHandler(object):
+    def __init__(self):
+        self.forecast = []
+
+    def start_element(self, name, attrs):
+        print('sax:start_element: %s, attrs: %s' % (name, str(attrs)))
+        if name == 'yweather:location':
+            self.city = attrs['city']
+        if name == 'yweather:forecast':
+            dic = {'xmlns:yweather': attrs['xmlns:yweather'],
+                   'code':attrs['code'],
+                   'date':attrs['date'],
+                   'day':attrs['day'],
+                   'high':attrs['high'],
+                   'low':attrs['low'],
+                   'text':attrs['text']
+                   }
+            self.forecast.append(dic)
+
+    def end_element(self,name ):
+        print('sax:end_element: %s' % name)
+
+    def char_data(self, text):
+        print('sax:char_data: %s' % text)
+
+
+
+
+
+def parser_xml(xml):
+    handler = WeatherSaxHandler()
+    parser = ParserCreate()
+    parser.StartElementHandler = handler.start_element
+    parser.EndElementHandler = handler.end_element
+    parser.CharacterDataHandler = handler.char_data
+    parser.Parse(xml)
+    print('%s  %s' % (handler.city, handler.forecast))
+
+with request.urlopen(URL) as f:
+    data = f.read().decode('utf-8')
+    # print('\n\n--------------', data)
+    parser_xml(data)
+
+
+
+
+
+
+
+
