@@ -10,7 +10,6 @@ print(type(datetime.now()))  #<class 'datetime.datetime'>
 # 要指定某个日期和时间，我们直接用参数构造一个datetime：
 dt = datetime(2015,4,19,20)  # 用指定日期时间创建datetime
 print(dt)
-
 # 在计算机中，时间实际上是用数字表示的。我们把1970年1月1日 00:00:00 UTC+00:00时区的时刻称为epoch time，
 # 记为0（1970年以前的时间timestamp为负数），当前时间就是相对于epoch time的秒数，称为timestamp
 

@@ -30,8 +30,6 @@ with request.urlopen(req) as f:
         print('%s : %s' % (k, v))
     print('Data: ', f.read().decode('utf-8'))
 
-
-# Post
 # 如果要以POST发送一个请求，只需要把参数data以bytes形式传入。
 # 我们模拟一个微博登录，先读取登录的邮箱和口令，然后按照weibo.cn的登录页的格式以username=xxx&password=xxx的编码传入：
 from  urllib import request, parse

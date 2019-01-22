@@ -14,9 +14,7 @@
 # 原有的Queue可以继续使用，但是，通过managers模块把Queue通过网络暴露出去，就可以让其他机器的进程访问Queue了。
 # 我们先看服务进程，服务进程负责启动Queue，把Queue注册到网络上，然后往Queue里面写入任务：
 
-
-import  random, time, queue
-
+import random, time, queue
 from multiprocessing.managers import BaseManager
 
 #发送任务的队列

@@ -73,7 +73,7 @@ print(r'\\\\\\\\\\\\\\\\\\\\\\\\\\')
 print(json.dumps(s, default=lambda obj:obj.__dict__))
 
 
-# 同样的道理，如果我们要把JSON反序列化为一个Student对象实例，
+# 同样的道理，如果我们要把JSON反序 列化为一个Student对象实例，
 # loads()方法首先转换出一个dict对象，然后，我们传入的object_hook函数负责把dict转换为Student实例：
 
 def dict2student(d):
